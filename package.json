@@ -23,7 +23,9 @@
     "@ionic/angular": "^5.5.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.2.0",
-    "zone.js": "~0.11.4"
+    "firebase": "^8.10.0",
+    "zone.js": "~0.11.4",
+    "@angular/fire": "^6.1.5"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~12.1.1",
