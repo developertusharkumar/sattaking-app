@@ -1,0 +1,35 @@
+.game {
+  &_data {
+    text-align: center;
+    padding: 0 1px 0 1px;
+    padding: 20px;
+    margin: 5px;
+    border: 1px solid black;
+    background-color: #003300;
+    color: #fff;
+
+    .edit-icon {
+        position: absolute;
+        right: 15px;
+        font-size: 20px;
+        top: 15px;
+    }
+
+    .name {
+      display: block;
+      font-size: 20px;
+    }
+
+    .time {
+      font-size: 20px;
+      padding: 5px;
+      display: block;
+      color: yellow;
+    }
+
+    .left-brac,
+    .right-brac {
+      color: #58facd;
+    }
+  }
+}

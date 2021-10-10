@@ -6,10 +6,10 @@
 
 <ion-content [fullscreen]="true">
   <!-- Segment in a toolbar -->
-  <ion-toolbar >
-    <ion-segment (ionChange)="segmentChanged($event)"  [value]="gameType">
+  <ion-toolbar>
+    <ion-segment (ionChange)="segmentChanged($event)" [value]="gameType">
       <ion-segment-button value="multiple">
-        <ion-icon name="game-controller-outline"></ion-icon>
+         <ion-icon name="game-controller-outline"></ion-icon>
       </ion-segment-button>
       <ion-segment-button value="single">
         <ion-icon name="game-controller-outline"></ion-icon>
@@ -17,18 +17,40 @@
     </ion-segment>
   </ion-toolbar>
 
-  <ion-list lines="none" *ngIf="gameType === 'multiple'">
-      <ion-label>Multiple</ion-label>
+  <ion-list *ngIf="gameType === 'multiple'">
+    <ion-list-header> All Games </ion-list-header>
+
+    <ion-row>
+      <ion-col class="game__row" size="6" *ngFor="let game of allGames">
+        <div class="game_data">
+          <ion-icon name="create-outline" class="edit-icon" (click)="editGame(game)"></ion-icon>
+            <span class="name">{{game.name}}</span>
+            <span class="time">({{game.time}})</span>
+            <span class="left-brac">[</span><strong> {{game.result}} </strong><span class="right-brac">]</span>
+         </div>
+      </ion-col>
+    </ion-row>
+
+ 
   </ion-list>
   <ion-list lines="none" *ngIf="gameType === 'single'">
-      <ion-label>Single</ion-label>
-  </ion-list>
+    <ion-list-header> All Games </ion-list-header>
 
+    <ion-row>
+      <ion-col class="game__row" size="6" *ngFor="let game of allGames">
+        <div class="game_data">
+          <ion-icon name="create-outline" class="edit-icon" (click)="editGame(game)"></ion-icon>
+            <span class="name">{{game.name}}</span>
+            <span class="time">({{game.time}})</span>
+            <span class="left-brac">[</span><strong> {{game.result}} </strong><span class="right-brac">]</span>
+         </div>
+      </ion-col>
+    </ion-row>
+  </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
     <ion-fab-button (click)="addGame()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  
 </ion-content>

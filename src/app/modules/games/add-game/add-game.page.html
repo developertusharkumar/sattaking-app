@@ -1,9 +1,71 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Add Game</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button
+        (click)="dismiss()"
+        defaultHref="tabs/games"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{operationType | titlecase}} Game</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  
+<ion-content class="game">
+  <form [formGroup]="gameForm" class="game-form">
+    <!-- <div class="row field-format">
+      <span class="modal-text-field-label">Name</span>
+      <input type="text" class="form-control android-id-text" placeholder="Full Name" formControlName="name" />
+    </div> -->
+
+    <ion-card>
+      <ion-list>
+        <ion-item>
+          <ion-label position="fixed">Name</ion-label>
+          <ion-input
+            type="text"
+            placeholder="Enter game name"
+            formControlName="name"
+            [disabled]="type === 'edit'"
+          ></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Time</ion-label>
+          <ng-container *ngIf="type === 'edit'">
+            <ion-input
+              [disabled]="type === 'edit'"
+              type="text"
+              placeholder="time"
+              formControlName="time"
+            ></ion-input>
+          </ng-container>
+
+          <ion-datetime
+            *ngIf="type === 'add'"
+            displayFormat="h:mm a"
+            placeholder="Enter Time"
+            formControlName="time"
+          ></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label position="fixed">Result</ion-label>
+          <ion-input
+            type="number"
+            placeholder="Enter Result"
+            formControlName="result"
+          ></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-row>
+        <ion-button
+          class="game-button"
+          (click)="saveGameDetails()"
+          [disabled]="!gameForm.valid"
+        >
+          {{type | titlecase}} Game
+          <ion-icon slot="end" name="save"></ion-icon>
+        </ion-button>
+      </ion-row>
+    </ion-card>
+  </form>
 </ion-content>
