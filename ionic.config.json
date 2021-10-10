@@ -1,5 +1,7 @@
 {
   "name": "sattaking-app",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
