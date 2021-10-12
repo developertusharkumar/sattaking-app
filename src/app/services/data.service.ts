@@ -27,19 +27,7 @@ export class DataService {
       }
     });
   }
-  //  updateGame(payload,gametype) {
-  //   // set the game inside the games
-  //   return this.dbRef.ref(`${this.dbPath}/games/${gametype}/${payload.name}`).set(payload, (error) => {
-  //     if (error) {
-  //       // The write failed...
-  //       console.log('error while adding the data', error);
-  //       return false;
-  //     } else {
-  //       // Data saved successfully!
-  //       return true;
-  //     }
-  //   });
-  // }
+
 
   updateGame(payload,gametype) {
     // A post entry.

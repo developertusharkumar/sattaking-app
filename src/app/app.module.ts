@@ -20,7 +20,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
     AppRoutingModule,
     BrowserModule,
     AppRoutingModule,
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    // variations 2 - 1- app 2. web  (same firebase config)
+    AngularFireModule.initializeApp(environment.firebaseConfig), // project setup now we can use firebase
     AngularFireDatabaseModule, 
   ],
   providers: [FormBuilder,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
