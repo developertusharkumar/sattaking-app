@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-
+import * as moment from 'moment'; 
 
 @Component({
   selector: 'app-tab1',
@@ -12,6 +12,10 @@ export class CurrentGamePage {
   dbRef: firebase.default.database.Reference;
 
   constructor() {
+
+    console.log('date',moment().date())
+    console.log('year',moment().year())
+    console.log('month',moment().format('MMM'))
  
   }
 

@@ -17,6 +17,7 @@ export class AddGamePage implements OnInit {
   gameType: any;
   operationType: any;
   game: any;
+  dateObject: { date: number; month: string; year: number; };
 
   constructor(
     private fb: FormBuilder,
@@ -25,7 +26,14 @@ export class AddGamePage implements OnInit {
     private modalService: ModalService,
     private navParams: NavParams,
     private router: Router
-  ) {}
+  ) {
+
+    this.dateObject = {
+      date: moment().date(),
+      month: moment().format('MMM'),
+      year: moment().year()
+    }
+  }
 
   ngOnInit() {
     // getting the value of the component props
@@ -80,16 +88,13 @@ export class AddGamePage implements OnInit {
       .then((response) => {
         console.log('response of update result', response);
         this.helperService.presentToast('Game Updated Successfully', 2000);
+        this.updateDataTable(payload.name,payload.result);
         this.dismiss();
       })
       .catch((error) => {
         console.log('response of error result', error);
       });
-    // console.log('result', result);
-    // if (result) {
-    //   this.helperService.presentToast('Game Updated Successfully', 2000);
-    //   this.dismiss();
-    // }
+    
   }
 
   addGame() {
@@ -108,8 +113,59 @@ export class AddGamePage implements OnInit {
     console.log('result', result);
     if (result) {
       this.helperService.presentToast('Game Successfully Added', 2000);
+      this.createDataTable(payload.name,payload.result);
       this.dismiss();
     }
+  }
+
+  createDataTable(game,result) {
+
+    const payload = {
+      name: game,
+      result: result
+    }
+
+    const dateObject = {
+      date: moment().date(),
+      month: moment().format('MMM'),
+      year: moment().year()
+    }
+
+    console.log('date Object', dateObject);
+    console.log('payload Object', payload);
+    
+    const success = this.dataService.createDataTable(payload,this.gameType,dateObject);
+    if(success) {
+      console.log('data table success fully created');
+    } else {
+      console.log('something went wrong while creating the data table');
+    }
+
+
+  }
+
+
+  updateDataTable(game,result) {
+
+    console.log('game type for updating the data', this.gameType)
+    const payload = {
+      name: game,
+      result: result
+    }
+
+    console.log('date Object', this.dateObject);
+    console.log('payload Object', payload);
+    
+    this.dataService.updateDataTable(payload,this.gameType, this.dateObject)
+    .then((response) => {
+      console.log('response while updating the data table', response);
+
+    }, error => {
+      console.log('error while updating the data table', error);
+      
+    })
+
+
   }
 
   dismiss() {
