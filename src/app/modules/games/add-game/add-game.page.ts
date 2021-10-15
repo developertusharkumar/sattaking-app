@@ -80,15 +80,19 @@ export class AddGamePage implements OnInit {
       name: this.game.name,
       time: this.game.time,
       result: formValues.result,
+      trackId:  this.game.trackId,
       start_date: this.game.start_date,
     };
 
-    const result = this.dataService
-      .updateGame(payload, this.gameType)
+    const resultToUpdate  = formValues.result;
+
+
+    this.dataService
+      .updateGame(payload,resultToUpdate,this.gameType)
       .then((response) => {
         console.log('response of update result', response);
         this.helperService.presentToast('Game Updated Successfully', 2000);
-        this.updateDataTable(payload.name,payload.result);
+        this.updateDataTable(payload);
         this.dismiss();
       })
       .catch((error) => {
@@ -103,6 +107,7 @@ export class AddGamePage implements OnInit {
     const payload = {
       name: formValues.name,
       time: moment(formValues.time).format('hh:mm a'),
+      trackId: formValues.time,
       result: formValues.result,
       start_date: moment().format('DD-MM-YYYY'),
     };
@@ -113,28 +118,25 @@ export class AddGamePage implements OnInit {
     console.log('result', result);
     if (result) {
       this.helperService.presentToast('Game Successfully Added', 2000);
-      this.createDataTable(payload.name,payload.result);
+      this.createDataTable(payload);
       this.dismiss();
     }
   }
 
-  createDataTable(game,result) {
+  changed(event) {
+    console.log('event', event);
+    
+  }
 
-    const payload = {
-      name: game,
-      result: result
-    }
+  createDataTable(payload) {
 
-    const dateObject = {
-      date: moment().date(),
-      month: moment().format('MMM'),
-      year: moment().year()
-    }
 
-    console.log('date Object', dateObject);
+
+
+    console.log('date Object', this.dateObject);
     console.log('payload Object', payload);
     
-    const success = this.dataService.createDataTable(payload,this.gameType,dateObject);
+    const success = this.dataService.createDataTable(payload,this.gameType,this.dateObject);
     if(success) {
       console.log('data table success fully created');
     } else {
@@ -145,14 +147,9 @@ export class AddGamePage implements OnInit {
   }
 
 
-  updateDataTable(game,result) {
+  updateDataTable(payload) {
 
     console.log('game type for updating the data', this.gameType)
-    const payload = {
-      name: game,
-      result: result
-    }
-
     console.log('date Object', this.dateObject);
     console.log('payload Object', payload);
     

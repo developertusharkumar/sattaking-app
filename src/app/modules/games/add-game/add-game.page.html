@@ -40,8 +40,10 @@
           </ng-container>
 
           <ion-datetime
+          (ionChange)="changed($event)"
             *ngIf="type === 'add'"
-            displayFormat="h:mm a"
+            display-format="hh:mm A"
+            picker-format="hh:mm A"
             placeholder="Enter Time"
             formControlName="time"
           ></ion-datetime>

@@ -6,7 +6,7 @@ import { GamesPage } from './games.page';
 
 import { GamesRoutingModule } from './games-routing.module';
 import { AddGamePageModule } from './add-game/add-game.module';
-
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @NgModule({
   imports: [
@@ -16,7 +16,9 @@ import { AddGamePageModule } from './add-game/add-game.module';
     AddGamePageModule,
 
   ],
-  declarations: [GamesPage]
+  declarations: [GamesPage],
+  providers: [LocalNotifications]
+
 
 
 })

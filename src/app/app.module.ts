@@ -11,6 +11,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { environment } from '../environments/environment';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { LocalNotifications } from '@ionic-native/local-notifications/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,7 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
     AngularFireModule.initializeApp(environment.firebaseConfig), // project setup now we can use firebase
     AngularFireDatabaseModule, 
   ],
-  providers: [FormBuilder,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [FormBuilder,{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },LocalNotifications],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

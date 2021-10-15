@@ -46,9 +46,9 @@ export class DataService {
       });
   }
 
-  updateGame(payload, gametype) {
+  updateGame(payload, updateKey, gametype) {
     // A post entry.
-    var postData = payload;
+    var postData = updateKey;
 
     console.log('data to post', postData);
     // Get a key for a new Post.
@@ -56,7 +56,7 @@ export class DataService {
 
     // Write the new post's data simultaneously in the posts list and the user's post list.
     var updates = {};
-    updates[`${this.dbPath}/games/${gametype}/${payload.name}`] = postData;
+    updates[`${this.dbPath}/games/${gametype}/${payload.name}/result`] = postData;
     // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
     return this.dbRef.ref().update(updates);
@@ -71,7 +71,7 @@ export class DataService {
     console.log('date object', dateObject)
 
     var updates = {};
-    updates[`${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}`] = payload;
+    updates[`${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/result`] = payload.result;
     // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
     return this.dbRef.ref().update(updates);

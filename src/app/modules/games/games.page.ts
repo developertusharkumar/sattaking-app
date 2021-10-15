@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalService } from 'src/app/modal/modal.service';
+import { LocalNotificationService } from 'src/app/services/local-notifications.service';
 import { DataService } from '../../services/data.service';
 import { AddGamePage } from './add-game/add-game.page';
+
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-tab2',
@@ -14,7 +17,8 @@ export class GamesPage implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private dataService: DataService
+    private dataService: DataService,
+    private localNotificationService: LocalNotificationService,
   ) {}
 
   ngOnInit() {
@@ -80,5 +84,12 @@ export class GamesPage implements OnInit {
 
       console.log('data of the all games', data);
     });
+  }
+
+  triggerNotifications() {
+    const date  = moment();
+    const time = "2021-10-16T00:42:46.905+05:30"
+    console.log('time inside the trigger notification', time);
+    this.localNotificationService.setLocalNotification('Game Reminder', date,time, {name: 'Gali1', time: '02:00 Am'} )
   }
 }
