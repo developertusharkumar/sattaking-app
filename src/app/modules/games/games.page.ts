@@ -87,9 +87,16 @@ export class GamesPage implements OnInit {
   }
 
   triggerNotifications() {
-    const date  = moment();
-    const time = "2021-10-16T00:42:46.905+05:30"
-    console.log('time inside the trigger notification', time);
+    var dt = moment("03:03 AM", ["h:mm A"]).format("HH:mm");
+    var date = moment().format('YYYY-MM-DD');
+    const time = moment(`${date}T${dt}`).utcOffset("+05:30").format()
+    console.log('time', time);
+    console.log('time', dt);
+    
+    // this.localNotificationService.triggerFirstNotification()
+    // const date  = moment();
+    // const time = "2021-10-16T00:42:46.905+05:30"
+    // console.log('time inside the trigger notification', time);
     this.localNotificationService.setLocalNotification('Game Reminder', date,time, {name: 'Gali1', time: '02:00 Am'} )
   }
 }

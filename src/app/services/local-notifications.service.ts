@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  ELocalNotificationTriggerUnit,
     LocalNotifications,
   } from "@ionic-native/local-notifications/ngx";
 import * as moment from 'moment';
@@ -55,5 +56,25 @@ export class LocalNotificationService {
         });
       }
 
+
+      triggerFirstNotification() {
+        console.log('entering into the first triggered notification');
+        this.localNotifications.schedule({
+          id: 1,
+          title: `Game Reminder:`,
+          data: {name: 'Gali1', trackId: '1231', type: 'any'},
+          trigger: { every: ELocalNotificationTriggerUnit.MINUTE},
+          foreground: true,
+          vibrate: true
+        })
+        
+      }
+
+
+      triggerAllGamesNotification() {
+
+        // get all games
+
+      }
 
 }
