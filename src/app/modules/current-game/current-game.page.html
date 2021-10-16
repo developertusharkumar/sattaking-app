@@ -1,14 +1,10 @@
-<ion-header  [translucent]="true">
+<ion-header [translucent]="true">
   <ion-toolbar color="primary">
-    <ion-title >
-       Current Game
-    </ion-title>
+    <ion-title> Current Game </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-
   <ion-toolbar>
     <ion-segment (ionChange)="segmentChanged($event)" [value]="gameType">
       <ion-segment-button value="multiple">
@@ -16,19 +12,171 @@
       </ion-segment-button>
       <ion-segment-button value="single">
         <ion-icon name="game-controller-outline"></ion-icon>
-
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
   <ion-list *ngIf="gameType === 'multiple'">
-    <ion-list-header> Current Game </ion-list-header>
+    <form [formGroup]="gameForm" class="game-form">
+      <!-- <div class="row field-format">
+        <span class="modal-text-field-label">Name</span>
+        <input type="text" class="form-control android-id-text" placeholder="Full Name" formControlName="name" />
+      </div> -->
 
-    <!-- list the current game -->
+      <ion-card>
+        <ion-list>
+          <ion-item>
+            <ion-label position="fixed">Name</ion-label>
+            <!-- <ion-input
+              type="text"
+              placeholder="Enter game name"
+              formControlName="name"
+            ></ion-input> -->
+            <ion-select
+              formControlName="name"
+              placeholder="Select Game"
+              cancelText="Dismiss"
+            >
+              <ion-select-option [value]="game" *ngFor="let game of allGames"
+                >{{game.name}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+          <!-- <ion-item>
+            <ion-label position="fixed">Time</ion-label>
+            <ion-datetime
+              (ionChange)="changed($event)"
+              *ngIf="type === 'add'"
+              display-format="hh:mm A"
+              picker-format="hh:mm A"
+              placeholder="Enter Time"
+              formControlName="time"
+            ></ion-datetime>
+          </ion-item> -->
+          <ion-item>
+            <ion-label position="fixed">Result</ion-label>
+            <ion-input
+              type="number"
+              placeholder="Enter Result"
+              formControlName="result"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
 
-    
+        <ion-row>
+          <ion-button
+            class="game-button"
+            (click)="addCurrentGame()"
+            [disabled]="!gameForm.valid"
+          >
+            Add Current Game
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </form>
+
+    <ion-row *ngIf="currentGame">
+      <ion-col size="12">
+        <div class="game_data">
+          <!-- <ion-icon
+            name="create-outline"
+            class="edit-icon"
+            (click)="editGame(currentGame)"
+          ></ion-icon> -->
+          <span class="name">{{currentGame.name}}</span>
+          <!-- <span class="time">({{currentGame.time}})</span> -->
+          <strong class="result" *ngIf="currentGame?.result">
+            {{currentGame.result }}
+          </strong>
+          <strong class="result" *ngIf="!currentGame?.result"> WAIT </strong>
+        </div>
+      </ion-col>
+    </ion-row>
   </ion-list>
+  <ion-list *ngIf="gameType === 'single'">
+    <form [formGroup]="gameForm" class="game-form">
+      <!-- <div class="row field-format">
+        <span class="modal-text-field-label">Name</span>
+        <input type="text" class="form-control android-id-text" placeholder="Full Name" formControlName="name" />
+      </div> -->
 
-  
+      <ion-card>
+        <ion-list>
+          <ion-item>
+            <ion-label position="fixed">Name</ion-label>
+            <ion-input
+              type="text"
+              placeholder="Enter game name"
+              formControlName="name"
+            ></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">Time</ion-label>
+            <ion-datetime
+              display-format="hh:mm A"
+              picker-format="hh:mm A"
+              placeholder="Enter Time"
+              formControlName="time"
+            ></ion-datetime>
+          </ion-item>
+          <ion-item>
+            <ion-label position="fixed">Result</ion-label>
+            <ion-input
+              type="number"
+              placeholder="Enter Result"
+              formControlName="result"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
 
+        <ion-row>
+          <ion-button
+            class="game-button"
+            (click)="addCurrentGame()"
+            [disabled]="!gameForm.valid"
+          >
+            Add Current Game
+            <ion-icon slot="end" name="save"></ion-icon>
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </form>
+    <!-- <form [formGroup]="gameForm" class="game-form">
+      <ion-card>
+        <ion-list>
+          <ion-item>
+            <ion-label position="fixed">Name</ion-label>
 
+            <ion-select
+              formControlName="name"
+              placeholder="Select Game"
+              cancelText="Dismiss"
+            >
+              <ion-select-option [value]="game" *ngFor="let game of allGames"
+                >{{game.name}}</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="fixed">Result</ion-label>
+            <ion-input
+              type="number"
+              placeholder="Enter Result"
+              formControlName="result"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+
+        <ion-row>
+          <ion-button
+            class="game-button"
+            (click)="addCurrentGame()"
+            [disabled]="!gameForm.valid"
+          >
+            Add Current Game
+          </ion-button>
+        </ion-row>
+      </ion-card>
+    </form> -->
+  </ion-list>
 </ion-content>

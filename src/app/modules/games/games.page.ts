@@ -18,12 +18,15 @@ export class GamesPage implements OnInit {
   constructor(
     private modalService: ModalService,
     private dataService: DataService,
-    private localNotificationService: LocalNotificationService,
+    private localNotificationService: LocalNotificationService
   ) {}
 
   ngOnInit() {
     this.getAllGames();
+    
   }
+
+ 
 
   segmentChanged(event) {
     console.log('event', event);
@@ -67,36 +70,26 @@ export class GamesPage implements OnInit {
 
   getAllGames() {
     this.dataService.getAllGames(this.gameType).on('value', (snapshot) => {
-      const games = [];
-      console.log('snapshot ', snapshot.val());
-      // as the data is inside the format of object convert that into array to iterate
-      const data = snapshot.val();
-
-      // keys
-      const gameKeys = Object.keys(data);
-      gameKeys.forEach((game) => {
-        games.push(data[game]);
-      });
-
-      // all the games will be converted to the array
-      this.allGames = games;
-      console.log('games in the games array', games);
-
-      console.log('data of the all games', data);
+      this.allGames = this.dataService.extractGamesFromAllGames(snapshot);
     });
   }
 
   triggerNotifications() {
-    var dt = moment("03:03 AM", ["h:mm A"]).format("HH:mm");
+    var dt = moment('03:03 AM', ['h:mm A']).format('HH:mm');
     var date = moment().format('YYYY-MM-DD');
-    const time = moment(`${date}T${dt}`).utcOffset("+05:30").format()
+    const time = moment(`${date}T${dt}`).utcOffset('+05:30').format();
     console.log('time', time);
     console.log('time', dt);
-    
+
     // this.localNotificationService.triggerFirstNotification()
     // const date  = moment();
     // const time = "2021-10-16T00:42:46.905+05:30"
     // console.log('time inside the trigger notification', time);
-    this.localNotificationService.setLocalNotification('Game Reminder', date,time, {name: 'Gali1', time: '02:00 Am'} )
+    this.localNotificationService.setLocalNotification(
+      'Game Reminder',
+      date,
+      time,
+      { name: 'Gali1', time: '02:00 Am' }
+    );
   }
 }
