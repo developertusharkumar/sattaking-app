@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import * as moment from 'moment'; 
+import { DataService } from '../../services/data.service';
+
 
 @Component({
   selector: 'app-tab1',
@@ -8,10 +10,16 @@ import * as moment from 'moment';
 })
 export class CurrentGamePage {
 
+  gameType = 'multiple';
+
   private dbPath = 'sattaking';
   dbRef: firebase.default.database.Reference;
 
-  constructor() {
+
+
+  constructor(
+    private dataService: DataService
+  ) {
 
     console.log('date',moment().date())
     console.log('year',moment().year())
@@ -19,6 +27,28 @@ export class CurrentGamePage {
  
   }
 
+
+  listOfGames() {
+    // this.dataService.getAllGames(this.gameType).on('value', (snapshot) => {
+      
+
+    // })
+  }
+
+  getCurrentGame() {
+
+    // getting the current game
+  }
+
+
+
+  addCurrentGame() {
+
+
+  }
+
+
+  
 
   
 
