@@ -92,6 +92,22 @@ export class DataService {
     return this.dbRef.ref().update(updates);
   }
 
+  updateSingleGame(payload, gametype) {
+
+     // Get a key for a new Post.
+     // var newPostKey = this.dbRef.ref(`${this.dbPath}/games/${gametype}`).child(`${payload.name}`).push().key;
+ 
+     // Write the new post's data simultaneously in the posts list and the user's post list.
+     var updates = {};
+     updates[`${this.dbPath}/games/${gametype}/${payload.name}/result`] =
+       payload.result;
+     updates[`${this.dbPath}/games/${gametype}/${payload.name}/time`] =
+       payload.time;
+     // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+ 
+     return this.dbRef.ref().update(updates);
+  }
+
   updateDataTable(payload, gametype, dateObject) {
     console.log('date object', dateObject);
 

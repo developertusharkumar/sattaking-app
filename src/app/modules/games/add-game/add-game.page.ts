@@ -77,10 +77,14 @@ export class AddGamePage implements OnInit {
         });
       }
       if (this.operationType === 'edit') {
+        
+        this.showSlotsOfTime();
         this.gameForm = this.fb.group({
-          name: [this.game.name, Validators.required],
+          name: [this.game.name],
+          slot: [this.game.slot, Validators.required],
           time: [this.game.time, Validators.required],
-          result: [this.game.result, Number],
+          result: [this.game.result,Validators.required],
+         
         });
       }
     }
@@ -188,7 +192,7 @@ export class AddGamePage implements OnInit {
   // for single game
 
   showSlotsOfTime() {
-    const formValues = this.gameForm.value;
+    const formValues = this.operationType === 'add' ? this.gameForm.value : this.game;
     console.log('get the slot preffered', formValues);
     
 
@@ -218,6 +222,27 @@ export class AddGamePage implements OnInit {
       // this.createDataTable(payload);
       this.dismiss();
     }
+  }
+
+
+  updateSingleGame() {
+    const formValues = this.gameForm.value;
+    console.log('add single game payload', formValues )
+
+    const payload = formValues;
+
+    
+    this.dataService
+    .updateSingleGame(payload,this.gameType)
+    .then((response) => {
+      console.log('response of update result', response);
+      this.helperService.presentToast('Game Updated Successfully', 2000);
+      // this.updateDataTable(payload);
+      this.dismiss();
+    })
+    .catch((error) => {
+      console.log('response of error result', error);
+    });
   }
 
 
