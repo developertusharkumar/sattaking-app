@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFireDatabase, AngularFireList } from '@angular/fire/database';
 
 import * as firebase from 'firebase';
-import * as moment from 'moment'; 
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root',
@@ -93,19 +93,36 @@ export class DataService {
   }
 
   updateSingleGame(payload, gametype) {
+    // Get a key for a new Post.
+    // var newPostKey = this.dbRef.ref(`${this.dbPath}/games/${gametype}`).child(`${payload.name}`).push().key;
 
-     // Get a key for a new Post.
-     // var newPostKey = this.dbRef.ref(`${this.dbPath}/games/${gametype}`).child(`${payload.name}`).push().key;
- 
-     // Write the new post's data simultaneously in the posts list and the user's post list.
-     var updates = {};
-     updates[`${this.dbPath}/games/${gametype}/${payload.name}/result`] =
-       payload.result;
-     updates[`${this.dbPath}/games/${gametype}/${payload.name}/time`] =
-       payload.time;
-     // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
- 
-     return this.dbRef.ref().update(updates);
+    // Write the new post's data simultaneously in the posts list and the user's post list.
+    var updates = {};
+    updates[`${this.dbPath}/games/${gametype}/${payload.name}/result`] =
+      payload.result;
+    updates[`${this.dbPath}/games/${gametype}/${payload.name}/time`] =
+      payload.time;
+    // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+    return this.dbRef.ref().update(updates);
+  }
+
+  updateSingleDataTable(payload, gametype, dateObject) {
+    console.log('date object', dateObject);
+
+    var updates = {};
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/result`
+    ] = payload.result;
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time`
+    ] = payload.time;
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time_slots/${payload.time}/result`
+    ] = payload.result;
+    // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+    return this.dbRef.ref().update(updates);
   }
 
   updateDataTable(payload, gametype, dateObject) {
@@ -160,30 +177,44 @@ export class DataService {
     } else {
       return [];
     }
-    
   }
 
   generateTimeWithIntervals(interval = 30) {
-
     const ranges = [];
     const date = new Date();
     const format = {
-        hour: 'numeric',
-        minute: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
     };
 
     for (let minutes = 0; minutes < 21 * 60; minutes = minutes + interval) {
-        date.setHours(9);
-        date.setMinutes(minutes);
-        ranges.push(moment(date).format('h:mm A'));
+      date.setHours(9);
+      date.setMinutes(minutes);
+      ranges.push(moment(date).format('h:mm A'));
     }
 
-    console.log('ranges', ranges)
-    const getTimeRangeIndex = ranges.findIndex((range) =>  range === '5:00 PM');
+    console.log('ranges', ranges);
+    const getTimeRangeIndex = ranges.findIndex((range) => range === '5:00 PM');
     console.log('index', getTimeRangeIndex);
 
-    console.log('left array', ranges.slice(0,getTimeRangeIndex + 1))
-    
-    return ranges.slice(0,getTimeRangeIndex + 1);
+    console.log('left array', ranges.slice(0, getTimeRangeIndex + 1));
+
+    return ranges.slice(0, getTimeRangeIndex + 1);
+  }
+
+  convertArrayToObject(arr) {
+    if (arr.length > 0) {
+      const obj = {};
+      arr.forEach((item) => {
+        console.log('item', item);
+
+        obj[item] = { time: item, result: '' };
+      });
+
+      return obj;
+      // console.log('object array to object', arrayToObject1);
+    } else {
+      return [];
+    }
   }
 }

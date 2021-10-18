@@ -123,7 +123,7 @@
             (click)="addSingleGame()"
             [disabled]="!gameForm.valid"
           >
-            Add Game
+            {{operationType || titlecase}} Game
             <ion-icon slot="end" name="save"></ion-icon>
           </ion-button>
         </ion-row>
@@ -172,7 +172,7 @@
             (click)="updateSingleGame()"
             [disabled]="!gameForm.valid"
           >
-            Add Game
+            {{operationType}} Game
             <ion-icon slot="end" name="save"></ion-icon>
           </ion-button>
         </ion-row>
