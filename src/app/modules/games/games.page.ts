@@ -5,6 +5,7 @@ import { DataService } from '../../services/data.service';
 import { AddGamePage } from './add-game/add-game.page';
 
 import * as moment from 'moment';
+import { HelperService } from '../../services/helper.service';
 
 @Component({
   selector: 'app-tab2',
@@ -14,19 +15,18 @@ import * as moment from 'moment';
 export class GamesPage implements OnInit {
   gameType = 'multiple';
   allGames: any[];
+  loading: Promise<HTMLIonLoadingElement>;
 
   constructor(
     private modalService: ModalService,
     private dataService: DataService,
-    private localNotificationService: LocalNotificationService
+    private localNotificationService: LocalNotificationService,
+    private helperService: HelperService,
   ) {}
 
   ngOnInit() {
     this.getAllGames();
-    
   }
-
- 
 
   segmentChanged(event) {
     console.log('event', event);
@@ -71,6 +71,7 @@ export class GamesPage implements OnInit {
   getAllGames() {
     this.dataService.getAllGames(this.gameType).on('value', (snapshot) => {
       this.allGames = this.dataService.extractGamesFromAllGames(snapshot);
+      console.log('all games', this.allGames);
     });
   }
 

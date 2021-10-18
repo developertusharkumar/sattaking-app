@@ -66,6 +66,21 @@ export class DataService {
       });
   }
 
+  createCurrentSingleGame(payload, gametype) {
+    return this.dbRef
+      .ref(`${this.dbPath}/currentGame/${gametype}/${payload.name}`)
+      .set(payload, (error) => {
+        if (error) {
+          // The write failed...
+          console.log('error while adding the data', error);
+          return false;
+        } else {
+          // Data saved successfully!
+          return true;
+        }
+      });
+  }
+
   // read
   getAllGames(gametype) {
     return this.dbRef.ref(`${this.dbPath}/games/${gametype}`);
@@ -120,6 +135,28 @@ export class DataService {
     updates[
       `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time_slots/${payload.time}/result`
     ] = payload.result;
+    // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
+
+    return this.dbRef.ref().update(updates);
+  }
+
+  updateSingleDataTableAndGame(payload, gametype, dateObject) {
+    console.log('date object', dateObject);
+
+    var updates = {};
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/result`
+    ] = payload.result;
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time`
+    ] = payload.time;
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time_slots/${payload.time}/result`
+    ] = payload.result;
+    updates[`${this.dbPath}/games/${gametype}/${payload.name}/result`] =
+      payload.result;
+    updates[`${this.dbPath}/games/${gametype}/${payload.name}/time`] =
+      payload.time;
     // updates['/user-posts/' + uid + '/' + newPostKey] = postData;
 
     return this.dbRef.ref().update(updates);

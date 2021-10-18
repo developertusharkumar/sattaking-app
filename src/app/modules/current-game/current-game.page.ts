@@ -4,6 +4,8 @@ import * as moment from 'moment';
 import { HelperService } from 'src/app/services/helper.service';
 import { DataService } from '../../services/data.service';
 
+
+
 @Component({
   selector: 'app-tab1',
   templateUrl: 'current-game.page.html',
@@ -17,14 +19,16 @@ export class CurrentGamePage implements OnInit {
   allGames: any[];
   gameForm: FormGroup;
 
-  currentGame: any;
+  currentGames: any;
 
   dateObject: { date: number; month: string; year: number };
+  timeSlots: any[];
+  showSlots: boolean = false;
 
   constructor(
     private dataService: DataService,
     private fb: FormBuilder,
-    private helperService: HelperService
+    private helperService: HelperService,
   ) {
     console.log('date', moment().date());
     console.log('year', moment().year());
@@ -35,7 +39,6 @@ export class CurrentGamePage implements OnInit {
       month: moment().format('MMM'),
       year: moment().year(),
     };
-    
   }
 
   createForm() {
@@ -55,24 +58,38 @@ export class CurrentGamePage implements OnInit {
   }
 
   ngOnInit() {
+
     this.getAllGames();
     this.getCurrentGame();
+
   }
 
   getCurrentGame() {
     // getting the current game
+
     this.dataService.getCurrentGame(this.gameType).on('value', (snapshot) => {
       console.log('snap shot for current game', snapshot.val());
-      this.currentGame = snapshot.val();
+
+      if (snapshot.val()) {
+        if (this.gameType === 'multiple') {
+          this.currentGames = snapshot.val();
+        }
+        if (this.gameType === 'single') {
+          const singleGames = snapshot.val();
+          this.currentGames = Object.keys(singleGames).map((key) => {
+            return singleGames[key];
+          });
+        }
+      }
     });
   }
 
   getAllGames() {
+    
+    
     this.createForm();
     this.dataService.getAllGames(this.gameType).on('value', (snapshot) => {
-     
-        this.allGames = this.dataService.extractGamesFromAllGames(snapshot);
-     
+      this.allGames = this.dataService.extractGamesFromAllGames(snapshot);
     });
 
     console.log('get all games', this.allGames);
@@ -82,6 +99,21 @@ export class CurrentGamePage implements OnInit {
     console.log('event', event);
     this.gameType = event.detail.value;
     this.getAllGames();
+    this.getCurrentGame();
+  }
+
+  showSlotsOfTime(game) {
+    const formValues = this.gameForm.value;
+
+    console.log('form values', formValues);
+    this.timeSlots = this.dataService.generateTimeWithIntervals(
+      formValues.slot
+    );
+
+    if (this.timeSlots.length > 0) {
+      this.showSlots = true;
+    }
+    console.log('time slots', this.timeSlots);
   }
 
   addCurrentGame() {
@@ -108,6 +140,46 @@ export class CurrentGamePage implements OnInit {
     }
   }
 
+  addCurrentSingleGame() {
+    const formValues = this.gameForm.value;
+
+    formValues.name['result'] = formValues.result;
+
+    const payload = formValues.name;
+    payload['time'] = formValues.time;
+
+    console.log('payload', payload);
+
+    this.gameForm.reset();
+
+    // create the current game and update data in all
+    const result = this.dataService.createCurrentSingleGame(
+      payload,
+      this.gameType
+    );
+    console.log('result', result);
+    if (result) {
+      this.helperService.presentToast('Current Game Successfully Added', 2000);
+      this.updateSingleGameDataAndDataTable(payload);
+      this.getCurrentGame();
+    }
+  }
+
+  updateSingleGameDataAndDataTable(payload) {
+    console.log('payload for current data upload', payload);
+    this.dataService
+      .updateSingleDataTableAndGame(payload, this.gameType, this.dateObject)
+      .then((response) => {
+        console.log(
+          'reponse while updating the games and data table',
+          response
+        );
+      })
+      .catch((error) => {
+        console.log('error while updating the games and data table', error);
+      });
+  }
+
   updateDataTableAndGamesData(payload) {
     this.dataService
       .updateDataTableAndGamesData(payload, this.gameType, this.dateObject)
@@ -121,6 +193,4 @@ export class CurrentGamePage implements OnInit {
         console.log('error while updating the games and data table', error);
       });
   }
-
-  addCurrentSingleGame() {}
 }

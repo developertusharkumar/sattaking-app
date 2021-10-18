@@ -73,7 +73,7 @@ export class AddGamePage implements OnInit {
           name: [null, Validators.required],
           slot: [null, Validators.required],
           time: [null, Validators.required],
-          result: [null, Validators.required],
+          result: [null, Number],
         });
       }
       if (this.operationType === 'edit') {
@@ -82,7 +82,7 @@ export class AddGamePage implements OnInit {
           name: [this.game.name],
           slot: [this.game.slot, Validators.required],
           time: [this.game.time, Validators.required],
-          result: [this.game.result, Validators.required],
+          result: [this.game.result,Number],
         });
       }
     }
@@ -207,6 +207,8 @@ export class AddGamePage implements OnInit {
     console.log('add single game payload', formValues);
 
     const payload = formValues;
+
+    
 
     this.dataService
       .updateSingleGame(payload, this.gameType)

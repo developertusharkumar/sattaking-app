@@ -8,20 +8,21 @@
   <!-- Segment in a toolbar -->
   <ion-toolbar>
     <ion-segment (ionChange)="segmentChanged($event)" [value]="gameType">
-      <ion-segment-button value="multiple">
+      <ion-segment-button value="multiple" layout="icon-start">
+        <ion-label>Multiple</ion-label>
         <ion-icon name="game-controller-outline"></ion-icon>
       </ion-segment-button>
-      <ion-segment-button value="single">
+      <ion-segment-button value="single" layout="icon-start">
+        <ion-label>Single</ion-label>
         <ion-icon name="game-controller-outline"></ion-icon>
       </ion-segment-button>
     </ion-segment>
   </ion-toolbar>
 
-
   <ion-list *ngIf="gameType === 'multiple'">
-    <ion-list-header> All Games </ion-list-header>
+    <ion-list-header class="game-all"> All Games </ion-list-header>
 
-    <ion-row>
+    <ion-row *ngIf="allGames?.length > 0; else noMultipleGame">
       <ion-col class="game__row" size="6" *ngFor="let game of allGames">
         <div class="game_data">
           <ion-icon
@@ -36,11 +37,16 @@
         </div>
       </ion-col>
     </ion-row>
+    <ng-template #noMultipleGame>
+      <ion-row>
+        <ion-label class="no-data"> No Games </ion-label>
+      </ion-row>
+    </ng-template>
   </ion-list>
   <ion-list lines="none" *ngIf="gameType === 'single'">
-    <ion-list-header> All Games </ion-list-header>
+    <ion-list-header class="game-all"> All Games </ion-list-header>
 
-    <ion-row>
+    <ion-row *ngIf="allGames?.length > 0; else noSingleGame">
       <ion-col class="game__row" size="6" *ngFor="let game of allGames">
         <div class="game_data">
           <ion-icon
@@ -55,6 +61,11 @@
         </div>
       </ion-col>
     </ion-row>
+    <ng-template #noSingleGame>
+      <ion-row>
+        <ion-label class="no-data"> No Games  </ion-label>
+      </ion-row>
+    </ng-template>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
