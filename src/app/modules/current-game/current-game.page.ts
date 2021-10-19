@@ -107,7 +107,7 @@ export class CurrentGamePage implements OnInit {
 
     console.log('form values', formValues);
     this.timeSlots = this.dataService.generateTimeWithIntervals(
-      formValues.slot
+      formValues.name.slot
     );
 
     if (this.timeSlots.length > 0) {

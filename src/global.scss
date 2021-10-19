@@ -42,4 +42,10 @@ ion-toolbar {
 }
 
 
+:root{
+    .alert-wrapper.ion-overlay-wrapper.sc-ion-alert-md{
+    //    max-width: 100% !important;
+       width: 100% !important;
+    }
+ }
   

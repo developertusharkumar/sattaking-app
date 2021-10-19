@@ -216,7 +216,7 @@ export class DataService {
     }
   }
 
-  generateTimeWithIntervals(interval = 30) {
+  generateTimeWithIntervals(interval) {
     const ranges = [];
     const date = new Date();
     const format = {

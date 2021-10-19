@@ -30,7 +30,7 @@
               cancelText="Dismiss"
             >
               <ion-select-option [value]="game" *ngFor="let game of allGames"
-                >{{game.name}}</ion-select-option
+                >{{game.name}} ({{game.time}})</ion-select-option
               >
             </ion-select>
           </ion-item>

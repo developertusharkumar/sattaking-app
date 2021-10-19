@@ -1,21 +1,16 @@
 .game {
-    &-form {
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-  
-    &-button {
-      margin: 0 auto;
-      margin-top: 10px;
-      margin-bottom: 10px;
-    }
+  &-form {
+    margin-top: 20px;
+    margin-bottom: 20px;
   }
 
-
-ion-select  {
-    width: 100%;
+  &-button {
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
 }
-  
+
 
 .game {
   &_data {
@@ -28,10 +23,10 @@ ion-select  {
     color: #fff;
 
     .edit-icon {
-        position: absolute;
-        right: 15px;
-        font-size: 20px;
-        top: 15px;
+      position: absolute;
+      right: 15px;
+      font-size: 20px;
+      top: 15px;
     }
 
     .name {
