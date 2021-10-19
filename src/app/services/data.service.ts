@@ -245,7 +245,7 @@ export class DataService {
       arr.forEach((item) => {
         console.log('item', item);
 
-        obj[item] = { time: item, result: '' };
+        obj[item] = { time: item };
       });
 
       return obj;

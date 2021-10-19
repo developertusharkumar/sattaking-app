@@ -60,7 +60,7 @@
     <ion-row *ngIf="currentGames?.name; else noMultipleGame">
       <ion-col size="12">
         <div class="game_data">
-          <span class="name">{{currentGames.name}}</span>
+          <span class="name">{{currentGames.name}} ({{currentGames.time}})</span>
 
           <strong class="result" *ngIf="currentGames?.result">
             {{currentGames.result }}
