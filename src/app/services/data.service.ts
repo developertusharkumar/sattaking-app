@@ -142,6 +142,7 @@ export class DataService {
 
   updateSingleDataTableAndGame(payload, gametype, dateObject) {
     console.log('date object', dateObject);
+    console.log('updating the single game', payload);
 
     var updates = {};
     updates[
@@ -153,6 +154,9 @@ export class DataService {
     updates[
       `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time_slots/${payload.time}/result`
     ] = payload.result;
+    updates[
+      `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}/${payload.name}/time_slots/${payload.time}/time`
+    ] = payload.time;
     updates[`${this.dbPath}/games/${gametype}/${payload.name}/result`] =
       payload.result;
     updates[`${this.dbPath}/games/${gametype}/${payload.name}/time`] =
