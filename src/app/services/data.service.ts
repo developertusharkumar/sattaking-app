@@ -51,6 +51,43 @@ export class DataService {
       });
   }
 
+  addOneDayExtraToMultipleDataTable(payload, gametype, dateObject) {
+    return this.dbRef
+      .ref(
+        `${this.dbPath}/tables/${gametype}/${dateObject.month}-${dateObject.year}/${dateObject.date}`
+      )
+      .set(payload, (error) => {
+        if (error) {
+          // The write failed...
+          console.log('error while adding the data', error);
+          return false;
+        } else {
+          // Data saved successfully
+          console.log('data table successfully created');
+          return true;
+        }
+      });
+  }
+
+  deleteCurrentMultipleGame() {
+    return this.dbRef.ref(`${this.dbPath}/currentGame/multiple`).remove();
+  }
+  addGamesToGames(payload, gametype) {
+    return this.dbRef
+      .ref(`${this.dbPath}/games/${gametype}`)
+      .set(payload, (error) => {
+        if (error) {
+          // The write failed...
+          console.log('error while adding the data', error);
+          return false;
+        } else {
+          // Data saved successfully
+          console.log('data table successfully created');
+          return true;
+        }
+      });
+  }
+
   createCurrentGame(payload, gametype) {
     return this.dbRef
       .ref(`${this.dbPath}/currentGame/${gametype}`)

@@ -1,7 +1,14 @@
 <ion-header [translucent]="true">
   <ion-toolbar color="primary">
     <ion-title> Current Game </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="performActions()" fill="solid" color="primary">
+         Actions
+        
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content [fullscreen]="true">

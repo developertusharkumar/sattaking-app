@@ -4,8 +4,6 @@ import * as moment from 'moment';
 import { HelperService } from 'src/app/services/helper.service';
 import { DataService } from '../../services/data.service';
 
-
-
 @Component({
   selector: 'app-tab1',
   templateUrl: 'current-game.page.html',
@@ -28,7 +26,7 @@ export class CurrentGamePage implements OnInit {
   constructor(
     private dataService: DataService,
     private fb: FormBuilder,
-    private helperService: HelperService,
+    private helperService: HelperService
   ) {
     console.log('date', moment().date());
     console.log('year', moment().year());
@@ -58,10 +56,136 @@ export class CurrentGamePage implements OnInit {
   }
 
   ngOnInit() {
-
     this.getAllGames();
     this.getCurrentGame();
+  }
 
+  performActions() {
+    const dateObject = {
+      date: moment().date(),
+      month: moment().format('MMM'),
+      year: moment().year(),
+    };
+
+    const previousDate = moment().subtract(1, 'day').date();
+
+    const allFreshGames = [];
+
+    // add one day to the multiple game table
+    this.dataService
+      .getAllGames('multiple')
+      .once('value')
+      .then((snapshot) => {
+        console.log('result', snapshot.val());
+
+        const games = snapshot.val();
+
+        const gameKeys = Object.keys(games);
+        this.createFreshMultipleGames(gameKeys.slice(), games);
+        this.createFreshMultipleGamesTable(gameKeys.slice(), games,dateObject);
+      });
+
+    this.dataService
+      .getAllGames('single')
+      .once('value')
+      .then((snapshot) => {
+        console.log('result', snapshot.val());
+
+        const games = snapshot.val();
+
+        const gameKeys = Object.keys(games);
+        this.createFreshSingleGames(gameKeys.slice(), games);
+        
+        this.createFreshSingleGamesTable(gameKeys.slice(), games,dateObject);
+      });
+
+    // delete the current multiple game
+    this.deleteCurrentMultipleGame();
+
+    // get the previous day table
+    console.log('previous date', moment().subtract(1, 'day').date());
+  }
+
+  deleteCurrentMultipleGame() {
+      this.dataService.deleteCurrentMultipleGame().then((response) => {
+        console.log('multiple game removed')
+      })
+  }
+  createFreshMultipleGames(gameKeys, games) {
+    gameKeys.forEach((game) => {
+      const result = games[game].result;
+      delete games[game].prevResult;
+      delete games[game].result;
+      games[game]['prevResult'] = result;
+    });
+
+    console.log('fresh games for games', games);
+
+    // add fresh games to the current date
+    this.dataService.addGamesToGames(games, 'multiple').then((result) => {
+      console.log(
+        'successfully added the new games payload  to the multiple games',
+        result
+      );
+    });
+  }
+
+  createFreshSingleGames(gameKeys, games) {
+    gameKeys.forEach((game) => {
+      delete games[game].result;
+    });
+
+    console.log('fresh games for games', games);
+
+    // add fresh games to the current date
+    this.dataService.addGamesToGames(games, 'single').then((result) => {
+      console.log(
+        'successfully added the new games payload  to the single games',
+        result
+      );
+    });
+    this.dataService.createCurrentGame(games, 'single').then((result) => {
+      console.log(
+        'successfully reset the single games',
+        result
+      );
+    });
+  }
+
+  createFreshMultipleGamesTable(gameKeys, games, dateObject) {
+    gameKeys.forEach((game) => {
+      delete games[game].prevResult;
+      delete games[game].result;
+    });
+
+    console.log('fresh games', games);
+
+    // add fresh games to the current date
+    this.dataService
+      .addOneDayExtraToMultipleDataTable(games, 'multiple', dateObject)
+      .then((result) => {
+        console.log(
+          'successfully added the new table to the multiple table',
+          result
+        );
+      });
+  }
+  createFreshSingleGamesTable(gameKeys, games, dateObject) {
+    gameKeys.forEach((game) => {
+      delete games[game].result;
+    });
+
+    console.log('fresh games for single', games);
+
+    // add fresh games to the current date
+    this.dataService
+      .addOneDayExtraToMultipleDataTable(games, 'single', dateObject)
+      .then((result) => {
+        console.log(
+          'successfully added the new table to the single table',
+          result
+        );
+      });
   }
 
   getCurrentGame() {
@@ -85,8 +209,6 @@ export class CurrentGamePage implements OnInit {
   }
 
   getAllGames() {
-    
-    
     this.createForm();
     this.dataService.getAllGames(this.gameType).on('value', (snapshot) => {
       this.allGames = this.dataService.extractGamesFromAllGames(snapshot);
