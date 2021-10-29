@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-game',
-  templateUrl: './add-game.page.html',
+  templateUrl: 'add-game.page.html',
   styleUrls: ['./add-game.page.scss'],
 })
 export class AddGamePage implements OnInit {

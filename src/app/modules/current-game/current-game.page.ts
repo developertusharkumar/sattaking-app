@@ -78,11 +78,12 @@ export class CurrentGamePage implements OnInit {
       .then((snapshot) => {
         console.log('result', snapshot.val());
 
-        const games = snapshot.val();
+        const gamesForGame = snapshot.val();
+        const gamesForTable = snapshot.val();
 
-        const gameKeys = Object.keys(games);
-        this.createFreshMultipleGames(gameKeys.slice(), games);
-        this.createFreshMultipleGamesTable(gameKeys.slice(), games,dateObject);
+        const gameKeys = Object.keys(gamesForGame);
+        this.createFreshMultipleGames(gameKeys.slice(), gamesForGame);
+        this.createFreshMultipleGamesTable(gameKeys.slice(), gamesForTable,dateObject);
       });
 
     this.dataService
@@ -113,10 +114,12 @@ export class CurrentGamePage implements OnInit {
   }
   createFreshMultipleGames(gameKeys, games) {
     gameKeys.forEach((game) => {
-      const result = games[game].result;
-      delete games[game].prevResult;
-      delete games[game].result;
-      games[game]['prevResult'] = result;
+      console.log('game', games[game]);
+      if(Object.keys(games[game]).includes('result')) {
+        const result = games[game].result;
+        delete games[game].result;
+        games[game]['prevResult'] = result;
+      }
     });
 
     console.log('fresh games for games', games);
@@ -224,7 +227,7 @@ export class CurrentGamePage implements OnInit {
     this.getCurrentGame();
   }
 
-  showSlotsOfTime(game) {
+  showSlotsOfTime() {
     const formValues = this.gameForm.value;
 
     console.log('form values', formValues);
