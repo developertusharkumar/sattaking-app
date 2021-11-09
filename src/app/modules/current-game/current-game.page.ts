@@ -60,52 +60,6 @@ export class CurrentGamePage implements OnInit {
     this.getCurrentGame();
   }
 
-  performActions() {
-    const dateObject = {
-      date: moment().date(),
-      month: moment().format('MMM'),
-      year: moment().year(),
-    };
-
-    const previousDate = moment().subtract(1, 'day').date();
-
-    const allFreshGames = [];
-
-    // add one day to the multiple game table
-    this.dataService
-      .getAllGames('multiple')
-      .once('value')
-      .then((snapshot) => {
-        console.log('result', snapshot.val());
-
-        const games = snapshot.val();
-
-        const gameKeys = Object.keys(games);
-        this.createFreshMultipleGames(gameKeys.slice(), games);
-        this.createFreshMultipleGamesTable(gameKeys.slice(), games,dateObject);
-      });
-
-    this.dataService
-      .getAllGames('single')
-      .once('value')
-      .then((snapshot) => {
-        console.log('result', snapshot.val());
-
-        const games = snapshot.val();
-
-        const gameKeys = Object.keys(games);
-        this.createFreshSingleGames(gameKeys.slice(), games);
-        
-        this.createFreshSingleGamesTable(gameKeys.slice(), games,dateObject);
-      });
-
-    // delete the current multiple game
-    this.deleteCurrentMultipleGame();
-
-    // get the previous day table
-    console.log('previous date', moment().subtract(1, 'day').date());
-  }
-
   deleteCurrentMultipleGame() {
       this.dataService.deleteCurrentMultipleGame().then((response) => {
         console.log('multiple game removed')
